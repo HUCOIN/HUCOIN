@@ -1,0 +1,18 @@
+=============== Dec 8, 2019 (+03) ===============
+21:12:49.021016 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+21:12:49.036502 db@open opening
+21:12:49.037033 version@stat F·[] S·0B[] Sc·[]
+21:12:49.046228 db@janitor F·2 G·0
+21:12:49.046268 db@open done T·9.73295ms
+21:13:18.972832 db@close closing
+21:13:18.972953 db@close done T·118.666µs
+=============== Dec 8, 2019 (+03) ===============
+21:13:41.855317 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+21:13:41.855498 version@stat F·[] S·0B[] Sc·[]
+21:13:41.855522 db@open opening
+21:13:41.855581 journal@recovery F·1
+21:13:41.855670 journal@recovery recovering @1
+21:13:41.866172 memdb@flush created L0@2 N·5 S·266B "loc..seq,v3":"version,v1"
+21:13:41.866433 version@stat F·[1] S·266B[266B] Sc·[0.25]
+21:13:41.891686 db@janitor F·3 G·0
+21:13:41.891717 db@open done T·36.183775ms

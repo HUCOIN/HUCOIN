@@ -1,0 +1,30 @@
+=============== Dec 8, 2019 (+03) ===============
+21:12:09.485746 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+21:12:09.500810 db@open opening
+21:12:09.501746 version@stat F·[] S·0B[] Sc·[]
+21:12:09.516047 db@janitor F·2 G·0
+21:12:09.516125 db@open done T·15.263283ms
+21:12:09.516865 db@close closing
+21:12:09.517019 db@close done T·152.67µs
+=============== Dec 8, 2019 (+03) ===============
+21:12:48.669249 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+21:12:48.669479 version@stat F·[] S·0B[] Sc·[]
+21:12:48.669509 db@open opening
+21:12:48.669576 journal@recovery F·1
+21:12:48.676633 journal@recovery recovering @1
+21:12:48.690919 memdb@flush created L0@2 N·19 S·1KiB "\fp\x88..\xe4\xd9\xe2,v6":"\xb2\xef8..i\xb3[,v9"
+21:12:48.698259 version@stat F·[1] S·1KiB[1KiB] Sc·[0.25]
+21:12:48.727336 db@janitor F·3 G·0
+21:12:48.727390 db@open done T·57.866052ms
+21:13:18.972394 db@close closing
+21:13:18.972643 db@close done T·245.432µs
+=============== Dec 8, 2019 (+03) ===============
+21:13:41.579037 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+21:13:41.579321 version@stat F·[1] S·1KiB[1KiB] Sc·[0.25]
+21:13:41.579352 db@open opening
+21:13:41.579426 journal@recovery F·1
+21:13:41.586291 journal@recovery recovering @3
+21:13:41.599686 memdb@flush created L0@5 N·196 S·8KiB "Dat..ion,v21":"\xf6\x9cc..kc\x10,v215"
+21:13:41.608004 version@stat F·[2] S·9KiB[9KiB] Sc·[0.50]
+21:13:41.635068 db@janitor F·4 G·0
+21:13:41.635126 db@open done T·55.756441ms
