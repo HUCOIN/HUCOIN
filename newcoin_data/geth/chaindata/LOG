@@ -28,3 +28,15 @@
 21:13:41.608004 version@stat F·[2] S·9KiB[9KiB] Sc·[0.50]
 21:13:41.635068 db@janitor F·4 G·0
 21:13:41.635126 db@open done T·55.756441ms
+21:33:18.164667 db@close closing
+21:33:18.165506 db@close done T·834.7µs
+=============== Dec 8, 2019 (+03) ===============
+21:36:48.729319 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+21:36:48.729713 version@stat F·[2] S·9KiB[9KiB] Sc·[0.50]
+21:36:48.729744 db@open opening
+21:36:48.729831 journal@recovery F·1
+21:36:48.737067 journal@recovery recovering @6
+21:36:48.749767 memdb@flush created L0@8 N·1 S·216B "Las..der,v218":"Las..der,v218"
+21:36:48.757175 version@stat F·[3] S·10KiB[10KiB] Sc·[0.75]
+21:36:48.783507 db@janitor F·5 G·0
+21:36:48.783566 db@open done T·53.805375ms
