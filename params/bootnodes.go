@@ -20,37 +20,36 @@ package params
 // the main Ethereum network.
 var MainnetBootnodes = []string{
 	// Ethereum Foundation Go Bootnodes
-	"enode://ee4bb1f622984d88239d5450be20dc27aea1a88e500b4cdf0e2065a7809cbfddab6fff2ed018dbdc4446d79d3884c2d6d61acfd02b57ec8084bd6b28be2f744a@127.0.0.1:30301",
-	"enode://ee4bb1f622984d88239d5450be20dc27aea1a88e500b4cdf0e2065a7809cbfddab6fff2ed018dbdc4446d79d3884c2d6d61acfd02b57ec8084bd6b28be2f744a@127.0.0.1:0",
+	"enode://21e167d604bfb5c145c4c2aad1b594742a8f3f801b3e2b0f110791517680ffa0f81c21fa25b5b393d9e84d8a3b59f001cd06580a1aa2f51c2d62c5dac6cc1f47@46.101.114.157:30301",
+	"enode://21e167d604bfb5c145c4c2aad1b594742a8f3f801b3e2b0f110791517680ffa0f81c21fa25b5b393d9e84d8a3b59f001cd06580a1aa2f51c2d62c5dac6cc1f47@46.101.114.157:0",
 }
 
 // TestnetBootnodes are the enode URLs of the P2P bootstrap nodes running on the
 // Ropsten test network.
 var TestnetBootnodes = []string{
-	"enode://ee4bb1f622984d88239d5450be20dc27aea1a88e500b4cdf0e2065a7809cbfddab6fff2ed018dbdc4446d79d3884c2d6d61acfd02b57ec8084bd6b28be2f744a@127.0.0.1:30301",
-	"enode://ee4bb1f622984d88239d5450be20dc27aea1a88e500b4cdf0e2065a7809cbfddab6fff2ed018dbdc4446d79d3884c2d6d61acfd02b57ec8084bd6b28be2f744a@127.0.0.1:0",
+	"enode://21e167d604bfb5c145c4c2aad1b594742a8f3f801b3e2b0f110791517680ffa0f81c21fa25b5b393d9e84d8a3b59f001cd06580a1aa2f51c2d62c5dac6cc1f47@46.101.114.157:30301",
+	"enode://21e167d604bfb5c145c4c2aad1b594742a8f3f801b3e2b0f110791517680ffa0f81c21fa25b5b393d9e84d8a3b59f001cd06580a1aa2f51c2d62c5dac6cc1f47@46.101.114.157:0",
 	// @gpip
 }
 
 // RinkebyBootnodes are the enode URLs of the P2P bootstrap nodes running on the
 // Rinkeby test network.
 var RinkebyBootnodes = []string{
-	"enode://ee4bb1f622984d88239d5450be20dc27aea1a88e500b4cdf0e2065a7809cbfddab6fff2ed018dbdc4446d79d3884c2d6d61acfd02b57ec8084bd6b28be2f744a@127.0.0.1:30301",
-	"enode://ee4bb1f622984d88239d5450be20dc27aea1a88e500b4cdf0e2065a7809cbfddab6fff2ed018dbdc4446d79d3884c2d6d61acfd02b57ec8084bd6b28be2f744a@127.0.0.1:0",
+	"enode://21e167d604bfb5c145c4c2aad1b594742a8f3f801b3e2b0f110791517680ffa0f81c21fa25b5b393d9e84d8a3b59f001cd06580a1aa2f51c2d62c5dac6cc1f47@46.101.114.157:30301",
+	"enode://21e167d604bfb5c145c4c2aad1b594742a8f3f801b3e2b0f110791517680ffa0f81c21fa25b5b393d9e84d8a3b59f001cd06580a1aa2f51c2d62c5dac6cc1f47@46.101.114.157:0",
 }
 
 // GoerliBootnodes are the enode URLs of the P2P bootstrap nodes running on the
 // Görli test network.
 var GoerliBootnodes = []string{
 	// Upstream bootnodes
-	"enode://ee4bb1f622984d88239d5450be20dc27aea1a88e500b4cdf0e2065a7809cbfddab6fff2ed018dbdc4446d79d3884c2d6d61acfd02b57ec8084bd6b28be2f744a@127.0.0.1:30301",
-	"enode://ee4bb1f622984d88239d5450be20dc27aea1a88e500b4cdf0e2065a7809cbfddab6fff2ed018dbdc4446d79d3884c2d6d61acfd02b57ec8084bd6b28be2f744a@127.0.0.1:0",
+	"enode://21e167d604bfb5c145c4c2aad1b594742a8f3f801b3e2b0f110791517680ffa0f81c21fa25b5b393d9e84d8a3b59f001cd06580a1aa2f51c2d62c5dac6cc1f47@46.101.114.157:30301",
+	"enode://21e167d604bfb5c145c4c2aad1b594742a8f3f801b3e2b0f110791517680ffa0f81c21fa25b5b393d9e84d8a3b59f001cd06580a1aa2f51c2d62c5dac6cc1f47@46.101.114.157:0",
 	// Ethereum Foundation bootnode
 }
 
 // DiscoveryV5Bootnodes are the enode URLs of the P2P bootstrap nodes for the
 // experimental RLPx v5 topic-discovery network.
 var DiscoveryV5Bootnodes = []string{
-	"enode://ee4bb1f622984d88239d5450be20dc27aea1a88e500b4cdf0e2065a7809cbfddab6fff2ed018dbdc4446d79d3884c2d6d61acfd02b57ec8084bd6b28be2f744a@127.0.0.1:30301",
-	"enode://ee4bb1f622984d88239d5450be20dc27aea1a88e500b4cdf0e2065a7809cbfddab6fff2ed018dbdc4446d79d3884c2d6d61acfd02b57ec8084bd6b28be2f744a@127.0.0.1:0",
-}
+"enode://21e167d604bfb5c145c4c2aad1b594742a8f3f801b3e2b0f110791517680ffa0f81c21fa25b5b393d9e84d8a3b59f001cd06580a1aa2f51c2d62c5dac6cc1f47@46.101.114.157:30301",
+	"enode://21e167d604bfb5c145c4c2aad1b594742a8f3f801b3e2b0f110791517680ffa0f81c21fa25b5b393d9e84d8a3b59f001cd06580a1aa2f51c2d62c5dac6cc1f47@46.101.114.157:0",
