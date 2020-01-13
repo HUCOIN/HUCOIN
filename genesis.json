@@ -1,6 +1,10 @@
 {
     "config": {
+<<<<<<< HEAD
         "chainId": 18,
+=======
+        "chainId": 12331445,
+>>>>>>> 398017162b273fbccca74bfd75738ec84719a0b1
         "homesteadBlock": 0,
         "eip150Block": 0,
         "eip155Block": 0,
