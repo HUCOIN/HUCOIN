@@ -183,8 +183,10 @@ func (tx *Transaction) Value() *big.Int    { return new(big.Int).Set(tx.data.Amo
 func (tx *Transaction) Nonce() uint64      { return tx.data.AccountNonce }
 func (tx *Transaction) CheckNonce() bool   { return true }
 func (tx *Transaction) Payer() []byte       { return common.CopyBytes(tx.data.Payer) }
+func (tx *Transaction) SetPayer(payer []byte)       {tx.data.Payer = payer}
 func (tx *Transaction) Sender() []byte       { return common.CopyBytes(tx.data.Sender) }
 func (tx *Transaction) PayerSig() []byte       { return common.CopyBytes(tx.data.PayerSig) }
+func (tx *Transaction) SetPayerSig(payerSig []byte)       {tx.data.PayerSig = payerSig}
 
 
 // To returns the recipient address of the transaction.

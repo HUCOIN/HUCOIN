@@ -44,7 +44,8 @@ const (
 var (
 	// ErrInvalidSender is returned if the transaction contains an invalid signature.
 	ErrInvalidSender = errors.New("invalid sender")
-
+	// ErrInvalidPayer is returned if the transaction contains an invalid payer signature.
+	ErrInvalidPayer = errors.New("invalid payer")
 	// ErrNonceTooLow is returned if the nonce of a transaction is lower than the
 	// one present in the local chain.
 	ErrNonceTooLow = errors.New("nonce too low")
@@ -515,13 +516,7 @@ func (pool *TxPool) local() map[common.Address]types.Transactions {
 func (pool *TxPool) validateTx(tx *types.Transaction, local bool) error {
 	// Heuristic limit, reject transactions over 32KB to prevent DOS attacks
 
-	if len(tx.Payer()) != 0 {
-		log.Info("pilge", "payer :", tx.Payer())
-		log.Info("pilge", "sender :", tx.Sender())
-		log.Info("pilge", "payer signature :", tx.PayerSig())
-		log.Info("pilge", "payer address", common.BytesToAddress(crypto.Keccak256(tx.Payer())[12:]))
-		// TODO PATU CHECK SIGNATURE FOR PAYER
-	}
+	
 
 	if tx.Size() > 32*1024 {
 		return ErrOversizedData
@@ -555,6 +550,31 @@ func (pool *TxPool) validateTx(tx *types.Transaction, local bool) error {
 
 	// Transactor should have enough funds to cover the costs
 	// cost == V + GP * GL
+	if len(tx.Payer()) != 0 {
+		log.Info("pilge", "payer :", tx.Payer())
+		log.Info("pilge", "sender :", tx.Sender())
+		log.Info("pilge", "payer signature :", tx.PayerSig())
+		payerAddr := common.BytesToAddress(crypto.Keccak256(tx.Payer())[12:])
+		log.Info("pilge", "payer address", payerAddr)
+		// TODO PATU CHECK SIGNATURE FOR PAYER
+		// If the payer signed sender is different from the sender.
+		senderAddr :=  common.BytesToAddress(tx.Sender())
+		if senderAddr!= from {
+			return ErrInvalidSender
+		}
+		payer, err := types.Payer(pool.signer, tx)
+		if err != nil {
+			log.Info("pilge", "tx", tx)
+			//
+			return ErrInvalidPayer
+		}
+		if(payer!= payerAddr){
+
+			return ErrInvalidPayer
+		}
+
+	}
+
 	if len(tx.Payer()) != 0 {
 		payerAdress := common.BytesToAddress(crypto.Keccak256(tx.Payer())[12:])
 		log.Info("pilge", "balance :", pool.currentState.GetBalance(payerAdress))

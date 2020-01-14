@@ -88,11 +88,34 @@ func Sender(signer Signer, tx *Transaction) (common.Address, error) {
 	return addr, nil
 }
 
+
+// Checks the payer signature
+func Payer(signer Signer, tx *Transaction) (common.Address, error) {
+	if sc := tx.from.Load(); sc != nil {
+		sigCache := sc.(sigCache)
+		// If the signer used to derive from in a previous
+		// call is not the same as used current, invalidate
+		// the cache.
+		if sigCache.signer.Equal(signer) {
+			return sigCache.from, nil
+		}
+	}
+
+	addr, err := signer.Sender(tx)
+	if err != nil {
+		return common.Address{}, err
+	}
+	tx.from.Store(sigCache{signer: signer, from: addr})
+	return addr, nil
+}
+
 // Signer encapsulates transaction signature handling. Note that this interface is not a
 // stable API and may change at any time to accommodate new protocol rules.
 type Signer interface {
 	// Sender returns the sender address of the transaction.
 	Sender(tx *Transaction) (common.Address, error)
+
+	Payer(tx *Transaction) (common.Address, error)
 	// SignatureValues returns the raw R, S, V values corresponding to the
 	// given signature.
 	SignatureValues(tx *Transaction, sig []byte) (r, s, v *big.Int, err error)
@@ -135,7 +158,20 @@ func (s EIP155Signer) Sender(tx *Transaction) (common.Address, error) {
 	V.Sub(V, big8)
 	return recoverPlain(s.Hash(tx), tx.data.R, tx.data.S, V, true)
 }
+func (s EIP155Signer) Payer(tx *Transaction) (common.Address, error) {
 
+	txV := new(big.Int).SetBytes(tx.PayerSig()[:2])
+	V := new(big.Int).Sub(txV, s.chainIdMul)
+	V.Sub(V, big8)
+	txS := new(big.Int).SetBytes(tx.PayerSig()[2:34])
+	txR := new(big.Int).SetBytes(tx.PayerSig()[34:])
+	var rtx *Transaction
+	*rtx = *tx
+	var emptySlice []byte
+	rtx.SetPayer(emptySlice)
+	rtx.SetPayerSig(emptySlice)
+	return recoverPlain(s.Hash(rtx), txR, txS, V, true)
+}
 // SignatureValues returns signature values. This signature
 // needs to be in the [R || S || V] format where V is 0 or 1.
 func (s EIP155Signer) SignatureValues(tx *Transaction, sig []byte) (R, S, V *big.Int, err error) {
@@ -152,6 +188,8 @@ func (s EIP155Signer) SignatureValues(tx *Transaction, sig []byte) (R, S, V *big
 
 // Hash returns the hash to be signed by the sender.
 // It does not uniquely identify the transaction.
+
+ 
 func (s EIP155Signer) Hash(tx *Transaction) common.Hash {
 	return rlpHash([]interface{}{
 		tx.data.AccountNonce,
@@ -181,6 +219,20 @@ func (hs HomesteadSigner) SignatureValues(tx *Transaction, sig []byte) (r, s, v 
 
 func (hs HomesteadSigner) Sender(tx *Transaction) (common.Address, error) {
 	return recoverPlain(hs.Hash(tx), tx.data.R, tx.data.S, tx.data.V, true)
+}
+func (hs HomesteadSigner) Payer(tx *Transaction) (common.Address, error) {
+	//import "math/big"
+	// z := new(big.Int)
+	// z.SetBytes(byteSliceHere)
+	txV := new(big.Int).SetBytes(tx.PayerSig()[:2])
+	txS := new(big.Int).SetBytes(tx.PayerSig()[2:34])
+	txR := new(big.Int).SetBytes(tx.PayerSig()[34:])
+	var rtx *Transaction
+	*rtx = *tx
+	var emptySlice []byte
+	rtx.SetPayer(emptySlice)
+	rtx.SetPayerSig(emptySlice)
+	return recoverPlain(hs.Hash(rtx), txR, txS, txV, true)
 }
 
 type FrontierSigner struct{}
@@ -217,6 +269,20 @@ func (fs FrontierSigner) Hash(tx *Transaction) common.Hash {
 
 func (fs FrontierSigner) Sender(tx *Transaction) (common.Address, error) {
 	return recoverPlain(fs.Hash(tx), tx.data.R, tx.data.S, tx.data.V, false)
+}
+func (fs FrontierSigner) Payer(tx *Transaction) (common.Address, error) {
+	//import "math/big"
+	// z := new(big.Int)
+	// z.SetBytes(byteSliceHere)
+	txV := new(big.Int).SetBytes(tx.PayerSig()[:2])
+	txS := new(big.Int).SetBytes(tx.PayerSig()[2:34])
+	txR := new(big.Int).SetBytes(tx.PayerSig()[34:])
+	var rtx *Transaction
+	*rtx = *tx
+	var emptySlice []byte
+	rtx.SetPayer(emptySlice)
+	rtx.SetPayerSig(emptySlice)
+	return recoverPlain(fs.Hash(rtx), txR, txS, txV, false)
 }
 
 func recoverPlain(sighash common.Hash, R, S, Vb *big.Int, homestead bool) (common.Address, error) {
