@@ -564,12 +564,12 @@ func (pool *TxPool) validateTx(tx *types.Transaction, local bool) error {
 		}
 		payer, err := types.Payer(pool.signer, tx)
 		if err != nil {
-			log.Info("pilge", "tx", tx)
+			log.Info("Err getting payer", "err", err)
 			//
 			return ErrInvalidPayer
 		}
 		if(payer!= payerAddr){
-
+			log.Info("Payer is not valid","payer",payer,"payerAddr",payerAddr)
 			return ErrInvalidPayer
 		}
 

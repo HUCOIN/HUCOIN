@@ -25,6 +25,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/params"
+	"github.com/ethereum/go-ethereum/log"
 )
 
 var (
@@ -91,17 +92,18 @@ func Sender(signer Signer, tx *Transaction) (common.Address, error) {
 
 // Checks the payer signature
 func Payer(signer Signer, tx *Transaction) (common.Address, error) {
-	if sc := tx.from.Load(); sc != nil {
-		sigCache := sc.(sigCache)
-		// If the signer used to derive from in a previous
-		// call is not the same as used current, invalidate
-		// the cache.
-		if sigCache.signer.Equal(signer) {
-			return sigCache.from, nil
-		}
-	}
+	log.Info("Checking the payer signature")
+	// if sc := tx.from.Load(); sc != nil {
+	// 	sigCache := sc.(sigCache)
+	// 	// If the signer used to derive from in a previous
+	// 	// call is not the same as used current, invalidate
+	// 	// the cache.
+	// 	if sigCache.signer.Equal(signer) {
+	// 		return sigCache.from, nil
+	// 	}
+	// }
 
-	addr, err := signer.Sender(tx)
+	addr, err := signer.Payer(tx)
 	if err != nil {
 		return common.Address{}, err
 	}
@@ -160,17 +162,20 @@ func (s EIP155Signer) Sender(tx *Transaction) (common.Address, error) {
 }
 func (s EIP155Signer) Payer(tx *Transaction) (common.Address, error) {
 
-	txV := new(big.Int).SetBytes(tx.PayerSig()[:2])
+	txV := new(big.Int).SetBytes(tx.PayerSig()[:1])
 	V := new(big.Int).Sub(txV, s.chainIdMul)
 	V.Sub(V, big8)
-	txS := new(big.Int).SetBytes(tx.PayerSig()[2:34])
-	txR := new(big.Int).SetBytes(tx.PayerSig()[34:])
-	var rtx *Transaction
-	*rtx = *tx
+	txS := new(big.Int).SetBytes(tx.PayerSig()[1:33])
+	txR := new(big.Int).SetBytes(tx.PayerSig()[33:])
+
+	var rtx Transaction
+	rtx = *tx
 	var emptySlice []byte
 	rtx.SetPayer(emptySlice)
 	rtx.SetPayerSig(emptySlice)
-	return recoverPlain(s.Hash(rtx), txR, txS, V, true)
+	rtxP := &rtx
+	log.Info("Payer Fields Of Tx ","txV",txV,"\ntxS",txS,"\ntxR",txR,"\nHash",s.Hash(rtxP))
+	return recoverPlain(s.Hash(rtxP), txR, txS, V, true)
 }
 // SignatureValues returns signature values. This signature
 // needs to be in the [R || S || V] format where V is 0 or 1.
@@ -224,9 +229,10 @@ func (hs HomesteadSigner) Payer(tx *Transaction) (common.Address, error) {
 	//import "math/big"
 	// z := new(big.Int)
 	// z.SetBytes(byteSliceHere)
-	txV := new(big.Int).SetBytes(tx.PayerSig()[:2])
-	txS := new(big.Int).SetBytes(tx.PayerSig()[2:34])
-	txR := new(big.Int).SetBytes(tx.PayerSig()[34:])
+	txV := new(big.Int).SetBytes(tx.PayerSig()[:1])
+	txS := new(big.Int).SetBytes(tx.PayerSig()[1:33])
+	txR := new(big.Int).SetBytes(tx.PayerSig()[33:])
+	log.Info("hs signer payer")
 	var rtx *Transaction
 	*rtx = *tx
 	var emptySlice []byte
@@ -274,9 +280,10 @@ func (fs FrontierSigner) Payer(tx *Transaction) (common.Address, error) {
 	//import "math/big"
 	// z := new(big.Int)
 	// z.SetBytes(byteSliceHere)
-	txV := new(big.Int).SetBytes(tx.PayerSig()[:2])
-	txS := new(big.Int).SetBytes(tx.PayerSig()[2:34])
-	txR := new(big.Int).SetBytes(tx.PayerSig()[34:])
+	log.Info("fs signer payer")
+	txV := new(big.Int).SetBytes(tx.PayerSig()[:1])
+	txS := new(big.Int).SetBytes(tx.PayerSig()[1:33])
+	txR := new(big.Int).SetBytes(tx.PayerSig()[33:])
 	var rtx *Transaction
 	*rtx = *tx
 	var emptySlice []byte
@@ -287,10 +294,12 @@ func (fs FrontierSigner) Payer(tx *Transaction) (common.Address, error) {
 
 func recoverPlain(sighash common.Hash, R, S, Vb *big.Int, homestead bool) (common.Address, error) {
 	if Vb.BitLen() > 8 {
+		log.Info("V bit len is longer than expected")
 		return common.Address{}, ErrInvalidSig
 	}
 	V := byte(Vb.Uint64() - 27)
 	if !crypto.ValidateSignatureValues(V, R, S, homestead) {
+		log.Info("Crypto couldn't validate the signature")
 		return common.Address{}, ErrInvalidSig
 	}
 	// encode the signature in uncompressed format
@@ -302,9 +311,11 @@ func recoverPlain(sighash common.Hash, R, S, Vb *big.Int, homestead bool) (commo
 	// recover the public key from the signature
 	pub, err := crypto.Ecrecover(sighash[:], sig)
 	if err != nil {
+		log.Info("Couldn't get the public key from signature")
 		return common.Address{}, err
 	}
 	if len(pub) == 0 || pub[0] != 4 {
+		log.Info("invalid public key")
 		return common.Address{}, errors.New("invalid public key")
 	}
 	var addr common.Address
