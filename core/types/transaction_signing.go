@@ -167,8 +167,7 @@ func (s EIP155Signer) Payer(tx *Transaction) (common.Address, error) {
 	txS := new(big.Int).SetBytes(tx.PayerSig()[1:33])
 	txR := new(big.Int).SetBytes(tx.PayerSig()[33:])
 
-	var rtx Transaction
-	rtx = *tx
+	rtx := *tx
 	var emptySlice []byte
 	rtx.SetPayer(emptySlice)
 	rtx.SetPayerSig(emptySlice)
