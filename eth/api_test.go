@@ -19,16 +19,15 @@ package eth
 import (
 	"bytes"
 	"fmt"
-	"math/big"
-	"reflect"
-	"sort"
-	"testing"
-
 	"github.com/davecgh/go-spew/spew"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/rawdb"
 	"github.com/ethereum/go-ethereum/core/state"
 	"github.com/ethereum/go-ethereum/crypto"
+	"math/big"
+	"reflect"
+	"sort"
+	"testing"
 )
 
 var dumper = spew.ConfigState{Indent: "    "}
@@ -38,7 +37,6 @@ func accountRangeTest(t *testing.T, trie *state.Trie, statedb *state.StateDB, st
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	if len(result.Accounts) != expectedNum {
 		t.Fatalf("expected %d results.  Got %d", expectedNum, len(result.Accounts))
 	}

@@ -24,8 +24,8 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/params"
 	"github.com/ethereum/go-ethereum/log"
+	"github.com/ethereum/go-ethereum/params"
 )
 
 var (
@@ -88,7 +88,6 @@ func Sender(signer Signer, tx *Transaction) (common.Address, error) {
 	tx.from.Store(sigCache{signer: signer, from: addr})
 	return addr, nil
 }
-
 
 // Checks the payer signature
 func Payer(signer Signer, tx *Transaction) (common.Address, error) {
@@ -174,9 +173,10 @@ func (s EIP155Signer) Payer(tx *Transaction) (common.Address, error) {
 	rtx.SetPayer(emptySlice)
 	rtx.SetPayerSig(emptySlice)
 	rtxP := &rtx
-	log.Info("Payer Fields Of Tx ","txV",txV,"\ntxS",txS,"\ntxR",txR,"\nHash",s.Hash(rtxP))
+	log.Info("Payer Fields Of Tx ", "txV", txV, "\ntxS", txS, "\ntxR", txR, "\nHash", s.Hash(rtxP))
 	return recoverPlain(s.Hash(rtxP), txR, txS, V, true)
 }
+
 // SignatureValues returns signature values. This signature
 // needs to be in the [R || S || V] format where V is 0 or 1.
 func (s EIP155Signer) SignatureValues(tx *Transaction, sig []byte) (R, S, V *big.Int, err error) {
@@ -194,7 +194,6 @@ func (s EIP155Signer) SignatureValues(tx *Transaction, sig []byte) (R, S, V *big
 // Hash returns the hash to be signed by the sender.
 // It does not uniquely identify the transaction.
 
- 
 func (s EIP155Signer) Hash(tx *Transaction) common.Hash {
 	return rlpHash([]interface{}{
 		tx.data.AccountNonce,

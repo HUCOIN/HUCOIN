@@ -86,8 +86,6 @@ type Header struct {
 	Nonce       BlockNonce     `json:"nonce"`
 }
 
-
-
 // field type overrides for gencodec
 type headerMarshaling struct {
 	Difficulty *hexutil.Big

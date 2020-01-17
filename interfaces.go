@@ -20,10 +20,9 @@ package ethereum
 import (
 	"context"
 	"errors"
-	"math/big"
-
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
+	"math/big"
 )
 
 // NotFound is returned by API methods if the requested item does not exist.
@@ -119,7 +118,7 @@ type CallMsg struct {
 	GasPrice *big.Int        // wei <-> gas exchange ratio
 	Value    *big.Int        // amount of wei sent along with the call
 	Data     []byte
-	Payer    []byte      // input data, usually an ABI-encoded contract method invocation
+	Payer    []byte // input data, usually an ABI-encoded contract method invocation
 }
 
 // A ContractCaller provides contract calls, essentially transactions that are executed by

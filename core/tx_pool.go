@@ -516,8 +516,6 @@ func (pool *TxPool) local() map[common.Address]types.Transactions {
 func (pool *TxPool) validateTx(tx *types.Transaction, local bool) error {
 	// Heuristic limit, reject transactions over 32KB to prevent DOS attacks
 
-	
-
 	if tx.Size() > 32*1024 {
 		return ErrOversizedData
 	}
@@ -558,8 +556,8 @@ func (pool *TxPool) validateTx(tx *types.Transaction, local bool) error {
 		log.Info("pilge", "payer address", payerAddr)
 		// TODO PATU CHECK SIGNATURE FOR PAYER
 		// If the payer signed sender is different from the sender.
-		senderAddr :=  common.BytesToAddress(tx.Sender())
-		if senderAddr!= from {
+		senderAddr := common.BytesToAddress(tx.Sender())
+		if senderAddr != from {
 			return ErrInvalidSender
 		}
 		payer, err := types.Payer(pool.signer, tx)
@@ -568,8 +566,8 @@ func (pool *TxPool) validateTx(tx *types.Transaction, local bool) error {
 			//
 			return ErrInvalidPayer
 		}
-		if(payer!= payerAddr){
-			log.Info("Payer is not valid","payer",payer,"payerAddr",payerAddr)
+		if payer != payerAddr {
+			log.Info("Payer is not valid", "payer", payer, "payerAddr", payerAddr)
 			return ErrInvalidPayer
 		}
 
@@ -1441,9 +1439,9 @@ func (pool *TxPool) demoteUnexecutables() {
 			log.Trace("Removed old pending transaction", "hash", hash)
 		}
 		// Drop all transactions that are too costly (low balance or out of gas), and queue any invalids back for later
-			// drops, invalids := list.Filter(pool.currentState.GetBalance(addr), pool.currentMaxGas)
-			// drops:=[]
-			// invalids:=[]
+		// drops, invalids := list.Filter(pool.currentState.GetBalance(addr), pool.currentMaxGas)
+		// drops:=[]
+		// invalids:=[]
 		// TODO PATU
 		// for _, tx := range drops {
 		// 	hash := tx.Hash()

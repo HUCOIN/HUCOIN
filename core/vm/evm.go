@@ -23,8 +23,8 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/params"
 	"github.com/ethereum/go-ethereum/log"
+	"github.com/ethereum/go-ethereum/params"
 )
 
 // emptyCodeHash is used by create to ensure deployment is disallowed to already
@@ -197,10 +197,10 @@ func (evm *EVM) Call(caller ContractRef, addr common.Address, input []byte, gas 
 		return nil, gas, ErrDepth
 	}
 	// Fail if we're trying to transfer more than the available balance
-	if (payer != [20]byte{} ){
+	if payer != [20]byte{} {
 		if !evm.Context.CanTransfer(evm.StateDB, payer, value) {
-		return nil, gas, ErrInsufficientBalance
-	}
+			return nil, gas, ErrInsufficientBalance
+		}
 	} else if !evm.Context.CanTransfer(evm.StateDB, caller.Address(), value) {
 		return nil, gas, ErrInsufficientBalance
 	}
@@ -227,10 +227,10 @@ func (evm *EVM) Call(caller ContractRef, addr common.Address, input []byte, gas 
 		}
 		evm.StateDB.CreateAccount(addr)
 	}
-	if (payer != [20]byte{} ){
+	if payer != [20]byte{} {
 		log.Info("Transferin from payer")
 		evm.Transfer(evm.StateDB, payer, to.Address(), value)
-	}else {
+	} else {
 		evm.Transfer(evm.StateDB, caller.Address(), to.Address(), value)
 	}
 	// Initialise a new contract and set the code that is to be used by the EVM.

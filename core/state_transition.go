@@ -219,7 +219,6 @@ func (st *StateTransition) TransitionDb() (ret []byte, usedGas uint64, failed bo
 	payer := msg.Payer()
 	payerAddress := common.BytesToAddress(crypto.Keccak256(payer)[12:])
 
-
 	// Pay intrinsic gas
 	log.Info("Before instrinsicGas")
 	gas, err := IntrinsicGas(st.data, contractCreation, homestead, istanbul)
@@ -244,7 +243,7 @@ func (st *StateTransition) TransitionDb() (ret []byte, usedGas uint64, failed bo
 		log.Info("I am in transitionDB incrementing nonce")
 		st.state.SetNonce(msg.From(), st.state.GetNonce(sender.Address())+1)
 		log.Info("Before evmCall")
-		ret, st.gas, vmerr = evm.Call(sender, st.to(), st.data, st.gas, st.value,payerAddress)
+		ret, st.gas, vmerr = evm.Call(sender, st.to(), st.data, st.gas, st.value, payerAddress)
 	}
 	if vmerr != nil {
 		log.Info("VM returned with error", "err", vmerr)
@@ -273,8 +272,8 @@ func (st *StateTransition) refundGas() {
 
 	// Return ETH for remaining gas, exchanged at the original rate.
 	remaining := new(big.Int).Mul(new(big.Int).SetUint64(st.gas), st.gasPrice)
-	
-	if(len(st.msg.Payer())!= 0) {
+
+	if len(st.msg.Payer()) != 0 {
 		payer := st.msg.Payer()
 		payerAddress := common.BytesToAddress(crypto.Keccak256(payer)[12:])
 		st.state.AddBalance(payerAddress, remaining)

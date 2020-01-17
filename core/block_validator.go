@@ -83,7 +83,7 @@ func (v *BlockValidator) ValidateState(block *types.Block, statedb *state.StateD
 		return fmt.Errorf("invalid gas used (remote: %d local: %d)", block.GasUsed(), usedGas)
 	}
 	if block.GasUsed() == 0 {
-		
+
 		return fmt.Errorf("krds napiyon bos block bu")
 	}
 

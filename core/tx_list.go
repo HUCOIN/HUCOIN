@@ -301,11 +301,11 @@ func (l *txList) Filter(costLimit *big.Int, gasLimit uint64) (types.Transactions
 
 	// Filter out all the transactions above the account's funds
 	removed := l.txs.Filter(func(tx *types.Transaction) bool {
-		log.Info("Inside filter ","costlimit",costLimit,"txCost",tx.Cost(),"txGas",tx.Gas(),"gasLimit",gasLimit)
-		
-		return tx.Cost().Cmp(costLimit) > 0 || tx.Gas() > gasLimit 
+		log.Info("Inside filter ", "costlimit", costLimit, "txCost", tx.Cost(), "txGas", tx.Gas(), "gasLimit", gasLimit)
+
+		return tx.Cost().Cmp(costLimit) > 0 || tx.Gas() > gasLimit
 	})
-	log.Info("Removed tx ","tx",removed)
+	log.Info("Removed tx ", "tx", removed)
 
 	// If the list was strict, filter anything above the lowest nonce
 	var invalids types.Transactions

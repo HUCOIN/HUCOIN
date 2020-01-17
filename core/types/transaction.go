@@ -50,10 +50,9 @@ type txdata struct {
 	Recipient    *common.Address `json:"to"       rlp:"nil"` // nil means contract creation
 	Amount       *big.Int        `json:"value"    gencodec:"required"`
 	Payload      []byte          `json:"input"    gencodec:"required"`
-	Sender 		[]byte			`json:"sender"`
-	Payer		[]byte			`json:"payer"`
-	PayerSig	[]byte			 `json:"payerSig"`
-
+	Sender       []byte          `json:"sender"`
+	Payer        []byte          `json:"payer"`
+	PayerSig     []byte          `json:"payerSig"`
 
 	// Signature values
 	V *big.Int `json:"v" gencodec:"required"`
@@ -176,18 +175,17 @@ func (tx *Transaction) UnmarshalJSON(input []byte) error {
 	return nil
 }
 
-func (tx *Transaction) Data() []byte       { return common.CopyBytes(tx.data.Payload) }
-func (tx *Transaction) Gas() uint64        { return tx.data.GasLimit }
-func (tx *Transaction) GasPrice() *big.Int { return new(big.Int).Set(tx.data.Price) }
-func (tx *Transaction) Value() *big.Int    { return new(big.Int).Set(tx.data.Amount) }
-func (tx *Transaction) Nonce() uint64      { return tx.data.AccountNonce }
-func (tx *Transaction) CheckNonce() bool   { return true }
-func (tx *Transaction) Payer() []byte       { return common.CopyBytes(tx.data.Payer) }
-func (tx *Transaction) SetPayer(payer []byte)       {tx.data.Payer = payer}
-func (tx *Transaction) Sender() []byte       { return common.CopyBytes(tx.data.Sender) }
-func (tx *Transaction) PayerSig() []byte       { return common.CopyBytes(tx.data.PayerSig) }
-func (tx *Transaction) SetPayerSig(payerSig []byte)       {tx.data.PayerSig = payerSig}
-
+func (tx *Transaction) Data() []byte                { return common.CopyBytes(tx.data.Payload) }
+func (tx *Transaction) Gas() uint64                 { return tx.data.GasLimit }
+func (tx *Transaction) GasPrice() *big.Int          { return new(big.Int).Set(tx.data.Price) }
+func (tx *Transaction) Value() *big.Int             { return new(big.Int).Set(tx.data.Amount) }
+func (tx *Transaction) Nonce() uint64               { return tx.data.AccountNonce }
+func (tx *Transaction) CheckNonce() bool            { return true }
+func (tx *Transaction) Payer() []byte               { return common.CopyBytes(tx.data.Payer) }
+func (tx *Transaction) SetPayer(payer []byte)       { tx.data.Payer = payer }
+func (tx *Transaction) Sender() []byte              { return common.CopyBytes(tx.data.Sender) }
+func (tx *Transaction) PayerSig() []byte            { return common.CopyBytes(tx.data.PayerSig) }
+func (tx *Transaction) SetPayerSig(payerSig []byte) { tx.data.PayerSig = payerSig }
 
 // To returns the recipient address of the transaction.
 // It returns nil if the transaction is a contract creation.
@@ -236,7 +234,7 @@ func (tx *Transaction) AsMessage(s Signer) (Message, error) {
 		amount:     tx.data.Amount,
 		data:       tx.data.Payload,
 		checkNonce: true,
-		payer: 		tx.data.Payer,
+		payer:      tx.data.Payer,
 	}
 
 	var err error
@@ -405,11 +403,10 @@ type Message struct {
 	gasPrice   *big.Int
 	data       []byte
 	checkNonce bool
-	payer		[]byte
-
+	payer      []byte
 }
 
-func NewMessage(from common.Address, to *common.Address, nonce uint64, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte, checkNonce bool,payer []byte) Message {
+func NewMessage(from common.Address, to *common.Address, nonce uint64, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte, checkNonce bool, payer []byte) Message {
 	return Message{
 		from:       from,
 		to:         to,
@@ -419,7 +416,7 @@ func NewMessage(from common.Address, to *common.Address, nonce uint64, amount *b
 		gasPrice:   gasPrice,
 		data:       data,
 		checkNonce: checkNonce,
-		payer: 		payer,
+		payer:      payer,
 	}
 }
 
@@ -431,4 +428,4 @@ func (m Message) Gas() uint64          { return m.gasLimit }
 func (m Message) Nonce() uint64        { return m.nonce }
 func (m Message) Data() []byte         { return m.data }
 func (m Message) CheckNonce() bool     { return m.checkNonce }
-func (m Message) Payer() []byte       { return common.CopyBytes(m.payer) }
+func (m Message) Payer() []byte        { return common.CopyBytes(m.payer) }
